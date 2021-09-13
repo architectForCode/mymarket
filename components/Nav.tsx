@@ -9,10 +9,12 @@ import {
   faSearch,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useRef } from "react";
 
 const NavWrapper = styled.div`
   width: 100%;
   height: 200px;
+  box-shadow: 0px 1px 10px rgba(1, 1, 1, 0.1);
 `;
 const NavInWrapper = styled.div`
   width: 85%;
@@ -25,7 +27,7 @@ const LinkWrapper = styled.div`
   grid-template-columns: repeat(5, 1fr) 3fr;
   align-items: center;
   justify-items: center;
-
+  background-color: white;
   a.Icon {
     width: 100%;
     span {
@@ -89,6 +91,8 @@ const Header = styled.header`
     border: 1px solid gray;
     height: 1.5rem;
     justify-self: start;
+    display: flex;
+    align-items: center;
     span {
       color: purple;
       margin-right: 5px;
@@ -110,25 +114,44 @@ const Header = styled.header`
   }
 `;
 const Nav: NextPage = () => {
+  const HeaderRef = useRef<HTMLDivElement>(null);
+  const NavRef = useRef<HTMLDivElement>(null);
+
+  const FixLinkWrapper = () => {
+    if (HeaderRef.current && NavRef.current && window.scrollY > 110) {
+      HeaderRef.current.style.display = "none";
+      NavRef.current.style.position = "fixed";
+      NavRef.current.style.height = "50px";
+    } else if (HeaderRef.current && NavRef.current && window.scrollY <= 110) {
+      HeaderRef.current.style.display = "grid";
+      NavRef.current.style.position = "";
+      NavRef.current.style.height = "200px";
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => FixLinkWrapper());
+    return window.removeEventListener("scroll", () => FixLinkWrapper());
+  }, []);
   return (
-    <NavWrapper>
+    <NavWrapper ref={NavRef}>
       <NavInWrapper>
-        <Header>
+        <Header ref={HeaderRef}>
           <div className="header__info">
             <span>샛별,택배</span>배송안내
           </div>
           <Image
             src="/images/logo.jpg"
             alt="logo"
-            width={190}
-            height={190}
+            width={200}
+            height={200}
           ></Image>
           <div className="header__auth">
-            <Link href="/">
+            <Link href="/SignUp">
               <a>회원가입</a>
             </Link>
 
-            <Link href="/">
+            <Link href="/SignIn">
               <a>
                 |<span>로그인</span>|
               </a>
