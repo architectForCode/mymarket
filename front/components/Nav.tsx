@@ -9,11 +9,12 @@ import {
   faSearch,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Category from "./Category";
 
 const NavWrapper = styled.div`
   width: 100%;
-  height: 200px;
+  height: 175px;
   box-shadow: 0px 1px 10px rgba(1, 1, 1, 0.1);
 `;
 const NavInWrapper = styled.div`
@@ -28,7 +29,14 @@ const LinkWrapper = styled.div`
   align-items: center;
   justify-items: center;
   background-color: white;
-  a.Icon {
+  div.Icon {
+    height: 120%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  a.Icon,
+  div.Icon {
     width: 100%;
     span {
       width: 100%;
@@ -36,7 +44,8 @@ const LinkWrapper = styled.div`
       margin-right: 12px;
     }
   }
-  a.Icon:nth-child(1) {
+  a.Icon:nth-child(1),
+  div.Icon:nth-child(1) {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -116,6 +125,15 @@ const Header = styled.header`
 const Nav: NextPage = () => {
   const HeaderRef = useRef<HTMLDivElement>(null);
   const NavRef = useRef<HTMLDivElement>(null);
+  const [category, setCategory] = useState(false);
+
+  const categoryHover = () => {
+    setCategory(true);
+  };
+
+  const categoryMouseOut = () => {
+    setCategory(false);
+  };
 
   const FixLinkWrapper = () => {
     if (HeaderRef.current && NavRef.current && window.scrollY > 110) {
@@ -125,7 +143,7 @@ const Nav: NextPage = () => {
     } else if (HeaderRef.current && NavRef.current && window.scrollY <= 110) {
       HeaderRef.current.style.display = "grid";
       NavRef.current.style.position = "";
-      NavRef.current.style.height = "200px";
+      NavRef.current.style.height = "175px";
     }
   };
 
@@ -162,14 +180,17 @@ const Nav: NextPage = () => {
           </div>
         </Header>
         <LinkWrapper>
-          <Link href="/">
-            <a className="Icon">
-              <span>
-                <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
-              </span>
-              전체카테고리
-            </a>
-          </Link>
+          <div
+            className="Icon"
+            onMouseEnter={categoryHover}
+            onMouseLeave={categoryMouseOut}
+          >
+            <span>
+              <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
+            </span>
+            전체카테고리
+          </div>
+
           <Link href="/">
             <a>신상품</a>
           </Link>
@@ -196,7 +217,7 @@ const Nav: NextPage = () => {
                 </span>
               </a>
             </Link>
-            <Link href="/">
+            <Link href="/Cart">
               <a className="Icon">
                 <span>
                   <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
@@ -207,6 +228,12 @@ const Nav: NextPage = () => {
           {""}
         </LinkWrapper>
       </NavInWrapper>
+      {category && (
+        <Category
+          categoryHover={categoryHover}
+          categoryMouseOut={categoryMouseOut}
+        />
+      )}
     </NavWrapper>
   );
 };

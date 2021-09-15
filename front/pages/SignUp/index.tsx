@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import next, { NextPage } from "next";
 import styled from "styled-components";
 import Nav from "../../components/Nav";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Message from "../../components/Message";
 
 const SignWrapper = styled.div`
@@ -214,15 +214,166 @@ const SubmitButton = styled.button`
 `;
 
 const SignUp: NextPage = () => {
+  const [message, setMessage] = useState("");
+  const [modal, setModal] = useState(false);
   const { register, handleSubmit } = useForm();
+  const tester = useRef({
+    id: false,
+    password: false,
+    again: false,
+  });
   const passwordRef = useRef<HTMLInputElement>(null);
   const againRef = useRef<HTMLInputElement>(null);
   const checkBox = useRef<HTMLDivElement>(null);
   const AllBox = useRef<HTMLDivElement>(null);
+
+  const submitTester = (data: any): string => {
+    const { id, password, again } = tester.current;
+
+    if (!id || !data.id) {
+      return "아이디를 입력해주세요";
+    } else if (!password || !passwordRef.current!.value) {
+      return "비밀번호를 입력해주세요";
+    } else if (!again || !againRef.current!.value) {
+      return "비밀번호를 입력해주세요";
+    } else if (!data.name) {
+      return "이름을 입력해주세요";
+    } else if (!data.email) {
+      return "이메일을 입력해주세요";
+    } else if (!data.phone) {
+      return "전화번호를 입력해주세요";
+    } else if (!data.one || !data.two || !data.five) {
+      return "필수 이용약관에 동의해주세요";
+    } else {
+      return "";
+    }
+  };
+
   const onSubmit = (data: any) => {
-    console.log(data);
-    console.log(passwordRef.current!.value);
-    // 비어있는 정보가 있으면 경고창을 띄워야 한다.
+    const result = submitTester(data);
+    if (result) {
+      setMessage(result);
+      setModal(true);
+    } else {
+      // api 호출
+    }
+  };
+
+  const idTester = (
+    value: string,
+    conditions: NodeListOf<ChildNode>
+  ): boolean => {
+    let sw = true;
+    let stack = [];
+    let testerResult = false;
+    if (value.length >= 6) {
+      for (let i = 0; i < value.length; i++) {
+        if (/[0-9]/.test(value[i]) || /[a-zA-Z]/.test(value[i])) {
+          const stackItem = /[0-9]/.test(value[i]) ? "number" : "string";
+          stack.push(stackItem);
+        } else {
+          sw = false;
+        }
+
+        if (i === value.length - 1) {
+          const set = new Set(stack);
+          if (set.size === 1 && set.has("number")) sw = false;
+        }
+      }
+      sw
+        ? ((conditions[0] as HTMLElement).style.color = "green")
+        : ((conditions[0] as HTMLElement).style.color = "red");
+      sw ? (testerResult = true) : (testerResult = false);
+    } else {
+      (conditions[0] as HTMLElement).style.color = "red";
+      testerResult = false;
+    }
+    return testerResult;
+  };
+
+  const passwordTester = (
+    value: string,
+    conditions: NodeListOf<ChildNode>
+  ): boolean => {
+    let stack = [];
+    let testerResult = [false, false, false];
+    let prevNum = "a";
+    let sameNumCount = 0;
+
+    if (againRef.current) {
+      const passwordAgain = againRef.current.value;
+      const againCondition = againRef.current.nextElementSibling?.firstChild;
+      if (passwordAgain === value) {
+        (againCondition as HTMLElement).style.color = "green";
+      } else {
+        (againCondition as HTMLElement).style.color = "red";
+      }
+    }
+
+    if (value.length >= 10) {
+      (conditions[0] as HTMLElement).style.color = "green";
+      testerResult[0] = true;
+      for (let i = 0; i < value.length; i++) {
+        if (/[0-9]/.test(value[i])) {
+          stack.push("number");
+          if (prevNum === "a") sameNumCount = 1;
+          else if (prevNum === value[i]) sameNumCount += 1;
+          prevNum = value[i];
+          continue;
+        } else if (/[a-zA-Z]/.test(value[i])) {
+          stack.push("english");
+        } else if (/[~!@#$%^&*()_+|<>?:{}]/.test(value[i])) {
+          stack.push("special");
+        } else {
+          stack.push("else");
+        }
+        prevNum = "a";
+        sameNumCount = 0;
+      }
+
+      //2번째 조건 판단
+      const set = new Set(stack);
+      if (set.size >= 2 && !set.has("else")) {
+        (conditions[1] as HTMLElement).style.color = "green";
+        testerResult[1] = true;
+      } else {
+        (conditions[1] as HTMLElement).style.color = "red";
+        testerResult[1] = false;
+      }
+
+      //3번째 조건 판단
+      if (sameNumCount >= 3) {
+        (conditions[2] as HTMLElement).style.color = "red";
+        testerResult[2] = false;
+      } else {
+        (conditions[2] as HTMLElement).style.color = "green";
+        testerResult[2] = true;
+      }
+    } else {
+      (conditions[0] as HTMLElement).style.color = "red";
+      testerResult[0] = false;
+    }
+    console.log(testerResult);
+    return !testerResult.includes(false);
+  };
+
+  const passwordAgainTester = (
+    value: string,
+    conditions: NodeListOf<ChildNode>
+  ): boolean => {
+    let testerResult = false;
+    if (passwordRef.current) {
+      const password = passwordRef.current.value;
+      if (password === value) {
+        (conditions[0] as HTMLElement).style.color = "green";
+        testerResult = true;
+      } else {
+        (conditions[0] as HTMLElement).style.color = "red";
+        testerResult = false;
+      }
+    }
+
+    return testerResult;
   };
 
   const onIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -230,89 +381,21 @@ const SignUp: NextPage = () => {
     const conditions = nextElementSibling!.childNodes;
 
     if (id === "id") {
-      let sw = true;
-      let stack = [];
-      if (value.length >= 6) {
-        for (let i = 0; i < value.length; i++) {
-          if (/[0-9]/.test(value[i]) || /[a-zA-Z]/.test(value[i])) {
-            const stackItem = /[0-9]/.test(value[i]) ? "number" : "string";
-            stack.push(stackItem);
-          } else {
-            sw = false;
-          }
-
-          if (i === value.length - 1) {
-            const set = new Set(stack);
-            if (set.size === 1 && set.has("number")) sw = false;
-          }
-        }
-        sw
-          ? ((conditions[0] as HTMLElement).style.color = "green")
-          : ((conditions[0] as HTMLElement).style.color = "red");
-      } else {
-        (conditions[0] as HTMLElement).style.color = "red";
-      }
+      // idTester(value, conditions);
+      tester.current = { ...tester.current, id: idTester(value, conditions) };
     } else if (id === "password") {
-      let stack = [];
-      let prevNum = "a";
-      let sameNumCount = 0;
-
-      if (againRef.current) {
-        const passwordAgain = againRef.current.value;
-        const againCondition = againRef.current.nextElementSibling?.firstChild;
-        if (passwordAgain === value) {
-          (againCondition as HTMLElement).style.color = "green";
-        } else {
-          (againCondition as HTMLElement).style.color = "red";
-        }
-      }
-
-      if (value.length >= 10) {
-        (conditions[0] as HTMLElement).style.color = "green";
-        for (let i = 0; i < value.length; i++) {
-          if (/[0-9]/.test(value[i])) {
-            stack.push("number");
-            if (prevNum === "a") sameNumCount = 1;
-            else if (prevNum === value[i]) sameNumCount += 1;
-            prevNum = value[i];
-            continue;
-          } else if (/[a-zA-Z]/.test(value[i])) {
-            stack.push("english");
-          } else if (/[~!@#$%^&*()_+|<>?:{}]/.test(value[i])) {
-            stack.push("special");
-          } else {
-            stack.push("else");
-          }
-          prevNum = "a";
-          sameNumCount = 0;
-        }
-
-        //2번째 조건 판단
-        const set = new Set(stack);
-        if (set.size >= 2 && !set.has("else")) {
-          (conditions[1] as HTMLElement).style.color = "green";
-        } else {
-          (conditions[1] as HTMLElement).style.color = "red";
-        }
-
-        //3번째 조건 판단
-        if (sameNumCount >= 3)
-          (conditions[2] as HTMLElement).style.color = "red";
-        else (conditions[2] as HTMLElement).style.color = "green";
-      } else {
-        (conditions[0] as HTMLElement).style.color = "red";
-      }
+      tester.current = {
+        ...tester.current,
+        password: passwordTester(value, conditions),
+      };
     } else {
-      if (passwordRef.current) {
-        const password = passwordRef.current.value;
-        if (password === value) {
-          (conditions[0] as HTMLElement).style.color = "green";
-        } else {
-          (conditions[0] as HTMLElement).style.color = "red";
-        }
-      }
+      tester.current = {
+        ...tester.current,
+        again: passwordAgainTester(value, conditions),
+      };
     }
   };
+
   const onInputClick = (e: React.FocusEvent<HTMLInputElement>) => {
     const { nextElementSibling } = e.currentTarget;
     (nextElementSibling as HTMLElement).style.display = "block";
@@ -551,23 +634,23 @@ const SignUp: NextPage = () => {
                     </div>
                   </label>
                   <label>
-                    <input type="checkbox" {...register("agreeOne")} />
+                    <input type="checkbox" {...register("one")} />
                     이용약관 동의<span>(필수)</span>
                   </label>
                   <label>
-                    <input type="checkbox" {...register("agreeTwo")} />
+                    <input type="checkbox" {...register("two")} />
                     개인정보 수집•이용 동의<span>(필수)</span>
                   </label>
                   <label>
-                    <input type="checkbox" {...register("agreeThree")} />
+                    <input type="checkbox" {...register("three")} />
                     개인정보 수집•이용 동의<span>(선택)</span>
                   </label>
                   <label>
-                    <input type="checkbox" {...register("agreeFour")} />
+                    <input type="checkbox" {...register("four")} />
                     무료배송,할인쿠폰 등 혜택/정보 수신 동의<span>(선택)</span>
                   </label>
                   <label>
-                    <input type="checkbox" {...register("agreeFive")} />
+                    <input type="checkbox" {...register("five")} />
                     본인은 만 14세 이상입니다.<span>(필수)</span>
                   </label>
                 </div>
@@ -576,7 +659,7 @@ const SignUp: NextPage = () => {
             <SubmitButton>가입하기</SubmitButton>
           </GridWrapper>
         </FormWrapper>
-        <Message message={"test"} />
+        {message && modal && <Message message={message} setModal={setModal} />}
       </SignWrapper>
     </>
   );
