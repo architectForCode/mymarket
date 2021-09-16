@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Nav from "../../components/Nav";
+import Nav from "../../components/common/Nav/Nav";
 
 const SignInWrapper = styled.div`
   width: 100%;

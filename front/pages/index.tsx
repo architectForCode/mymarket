@@ -4,7 +4,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false; /* eslint-disable import/first */
 import Head from "next/head";
 import styled from "styled-components";
-import Nav from "../components/Nav";
+import Nav from "../components/common/Nav/Nav";
 
 const HomeBlock = styled.div`
   min-height: 100vh;

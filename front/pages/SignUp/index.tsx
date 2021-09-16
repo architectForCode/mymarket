@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
 import next, { NextPage } from "next";
 import styled from "styled-components";
-import Nav from "../../components/Nav";
+import Nav from "../../components/common/Nav/Nav";
 import React, { useRef, useState } from "react";
 import Message from "../../components/Message";
 

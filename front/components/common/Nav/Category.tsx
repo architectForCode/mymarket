@@ -14,7 +14,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { ICategory } from "../types";
+import { ICategory } from "../../../types";
 import CategoryInfo from "./CategoryInfo";
 
 const CategoryWrapper = styled.div`
@@ -23,6 +23,7 @@ const CategoryWrapper = styled.div`
   display: flex;
   transform: translate(22.5%, 1%);
   overflow: auto;
+
   ul.mainList {
     display: flex;
     flex-direction: column;

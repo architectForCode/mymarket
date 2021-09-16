@@ -149,7 +149,7 @@ const Nav: NextPage = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", () => FixLinkWrapper());
-    return window.removeEventListener("scroll", () => FixLinkWrapper());
+    return () => window.removeEventListener("scroll", () => FixLinkWrapper());
   }, []);
   return (
     <NavWrapper ref={NavRef}>

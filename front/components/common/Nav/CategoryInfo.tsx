@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import category from "../lib/category";
-import { ICategoryNext } from "../types";
+import category from "../../../lib/category";
+import { ICategoryNext } from "../../../types";
 
 const Wrapper = styled.div`
   height: 100%;
