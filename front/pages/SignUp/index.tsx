@@ -5,7 +5,8 @@ import next, { NextPage } from "next";
 import styled from "styled-components";
 import Nav from "../../components/common/Nav/Nav";
 import React, { useRef, useState } from "react";
-import Message from "../../components/Message";
+import Message from "../../components/common/Message";
+import SearchAddress from "../../components/common/SearchAddress";
 
 const SignWrapper = styled.div`
   width: 100%;
@@ -87,19 +88,7 @@ const GridWrapper = styled.form`
         color: #cccccc;
       }
     }
-    section.second__where {
-      div.where__info {
-        width: 100%;
-        button {
-          width: 100%;
-          margin-bottom: 10px;
-        }
-        div {
-          font-size: 0.8rem;
-          color: gray;
-        }
-      }
-    }
+
     section.second__gender {
       div.gender__info {
         display: flex;
@@ -216,6 +205,7 @@ const SubmitButton = styled.button`
 const SignUp: NextPage = () => {
   const [message, setMessage] = useState("");
   const [modal, setModal] = useState(false);
+  const [addressInfo, setAddress] = useState("");
   const { register, handleSubmit } = useForm();
   const tester = useRef({
     id: false,
@@ -224,6 +214,7 @@ const SignUp: NextPage = () => {
   });
   const passwordRef = useRef<HTMLInputElement>(null);
   const againRef = useRef<HTMLInputElement>(null);
+
   const checkBox = useRef<HTMLDivElement>(null);
   const AllBox = useRef<HTMLDivElement>(null);
 
@@ -256,6 +247,7 @@ const SignUp: NextPage = () => {
       setModal(true);
     } else {
       // api 호출
+      console.log(data, (passwordRef.current as HTMLInputElement).value);
     }
   };
 
@@ -543,13 +535,7 @@ const SignUp: NextPage = () => {
                 <h1>
                   주소<span>*</span>
                 </h1>
-                <div className="where__info">
-                  <button type="button">
-                    <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-                    주소검색
-                  </button>
-                  <div>배송지에 따라 상품 정보가 달라질 수 있습니다.</div>
-                </div>
+                <SearchAddress setAddress={setAddress} />
               </section>
               <section className="second__gender">
                 <h1>성별</h1>

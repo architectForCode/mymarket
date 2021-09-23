@@ -1,84 +1,85 @@
-
-import { useRef } from "react";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useRef, useState } from "react";
+import Script from "next/script";
 import styled from "styled-components";
-import DaumPostCode from "react-daum-postcode";
-
+import execDaumPostcode from "../../lib/api/search_address";
+import { ISearchAddress } from "../../types";
 
 const SearchWrapper = styled.div``;
+const SearchBtnWrapper = styled.div`
+  width: 100%;
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  div {
+    font-size: 0.8rem;
+    color: gray;
+  }
+`;
 
-const SearchAddress = () => {
-  const postCode = useRef<HTMLInputElement>(null);
+const SearchAddress: React.FC<ISearchAddress> = ({ setAddress }) => {
+  const [where, setWhere] = useState<{
+    address: "string" | "";
+    extraAddr: "string" | "";
+  }>({ address: "", extraAddr: "" });
+  const [daum, setDaum] = useState(null);
   const address = useRef<HTMLInputElement>(null);
   const detailAddress = useRef<HTMLInputElement>(null);
   const extraAddress = useRef<HTMLInputElement>(null);
-    
-  
 
-
-//   return (
-//     <SearchWrapper>
-  
-
-//       <input
-//         type="text"
-//         id="sample6_postcode"
-//         placeholder="우편번호"
-//         ref={postCode}
-//       />
-//       <input
-//         type="button"
-//         onClick="sample6_execDaumPostcode()"
-//         value="우편번호 찾기"
-//       />
-//       <br />
-//       <input
-//         type="text"
-//         id="sample6_address"
-//         placeholder="주소"
-//         ref={address}
-//       />
-//       <br />
-//       <input
-//         type="text"
-//         id="sample6_detailAddress"
-//         placeholder="상세주소"
-//         ref={detailAddress}
-//       />
-//       <input
-//         type="text"
-//         id="sample6_extraAddress"
-//         placeholder="참고항목"
-//         ref={extraAddress}
-//       />
-//     </SearchWrapper>
-//   );
-// };
-
-// export default SearchAddress;
-const Postcode = () => {
-    const handleComplete = (data:any) => {
-      let fullAddress = data.address;
-      let extraAddress = ''; 
-      
-      if (data.addressType === 'R') {
-        if (data.bname !== '') {
-          extraAddress += data.bname;
-        }
-        if (data.buildingName !== '') {
-          extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
-        }
-        fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
-      }
-  
-      console.log(fullAddress);  // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+  useEffect(() => {
+    if (
+      address.current &&
+      detailAddress.current &&
+      extraAddress.current &&
+      where
+    ) {
+      (address.current as HTMLInputElement).value = where.address;
+      (extraAddress.current as HTMLInputElement).value = where.extraAddr;
     }
-  
-    return (
-      <DaumPostcode
-        onComplete={handleComplete}
-        { ...props }
-      />
-    );
-  }
+  }, [where, detailAddress, address, extraAddress]);
 
-  export default Postcode;
+  useEffect(() => {
+    setDaum((window as any).daum);
+  }, []);
+
+  return !where.address && !where.extraAddr ? (
+    <SearchBtnWrapper>
+      <Script
+        src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+        strategy="beforeInteractive"
+      ></Script>
+      <button type="button" onClick={execDaumPostcode(daum, setWhere)}>
+        <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+        주소검색
+      </button>
+      <div>배송지에 따라 상품 정보가 달라질 수 있습니다.</div>
+    </SearchBtnWrapper>
+  ) : (
+    <SearchWrapper>
+      <input
+        type="text"
+        id="sample6_address"
+        placeholder="주소"
+        ref={address}
+      />
+      <br />
+      <input
+        type="text"
+        id="sample6_detailAddress"
+        placeholder="상세주소"
+        ref={detailAddress}
+      />
+      <input
+        type="text"
+        id="sample6_extraAddress"
+        placeholder="참고항목"
+        ref={extraAddress}
+      />
+    </SearchWrapper>
+  );
+};
+
+export default SearchAddress;

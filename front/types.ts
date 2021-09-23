@@ -11,6 +11,9 @@ export interface ICategory {
 export interface ICategoryNext {
   keyword: string;
 }
+export interface ISearchAddress {
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
+}
 
 //////////////////
 
@@ -27,4 +30,12 @@ export interface ICategoryItem {
   noodle: string[];
   drink: string[];
   cookie: string[];
+}
+
+/////////////////  context type
+
+export interface IUser {
+  id: "string";
+  password: "string";
+  address: "string";
 }
