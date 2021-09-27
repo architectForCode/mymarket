@@ -1,3 +1,6 @@
+import React, { FormEvent } from "react";
+import Link from "next/dist/client/link";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Nav from "../../components/common/Nav/Nav";
 
@@ -47,16 +50,38 @@ const FormWrapper = styled.form`
   }
 `;
 const SignIn = () => {
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data: any) => {
+    const { id, password } = data;
+    // api호출해서 확인을 해야 한다.
+    console.log(id, password);
+  };
+
   return (
     <>
       <Nav />
       <SignInWrapper>
         <h1>로그인</h1>
-        <FormWrapper>
-          <input type="text" placeholder="아이디를 입력해주세요" />
-          <input type="password" placeholder="비밀번호를 입력해주세요" />
-          <button className="SignIn">로그인</button>
-          <button className="SignUp">회원가입</button>
+        <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+          <input
+            type="text"
+            placeholder="아이디를 입력해주세요"
+            {...register("id")}
+          />
+          <input
+            type="password"
+            placeholder="비밀번호를 입력해주세요"
+            {...register("password")}
+          />
+          <button type="submit" className="SignIn">
+            로그인
+          </button>
+          <Link href="/SignUp">
+            <button type="button" className="SignUp">
+              회원가입
+            </button>
+          </Link>
         </FormWrapper>
       </SignInWrapper>
     </>

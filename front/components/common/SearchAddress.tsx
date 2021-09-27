@@ -1,10 +1,11 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import styled from "styled-components";
 import execDaumPostcode from "../../lib/api/search_address";
 import { ISearchAddress } from "../../types";
+import { UserContext } from "../../contexts/User";
 
 const SearchWrapper = styled.div``;
 const SearchBtnWrapper = styled.div`
@@ -28,6 +29,13 @@ const SearchAddress: React.FC<ISearchAddress> = ({ setAddress }) => {
   const address = useRef<HTMLInputElement>(null);
   const detailAddress = useRef<HTMLInputElement>(null);
   const extraAddress = useRef<HTMLInputElement>(null);
+
+  const { user, writeAddress } = useContext(UserContext);
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.currentTarget.value;
+    writeAddress(where.address + text + where.extraAddr);
+  };
 
   useEffect(() => {
     if (
@@ -71,6 +79,7 @@ const SearchAddress: React.FC<ISearchAddress> = ({ setAddress }) => {
         id="sample6_detailAddress"
         placeholder="상세주소"
         ref={detailAddress}
+        onChange={onChange}
       />
       <input
         type="text"

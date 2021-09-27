@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form";
 import next, { NextPage } from "next";
 import styled from "styled-components";
 import Nav from "../../components/common/Nav/Nav";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Message from "../../components/common/Message";
 import SearchAddress from "../../components/common/SearchAddress";
+import { UserContext } from "../../contexts/User";
 
 const SignWrapper = styled.div`
   width: 100%;
@@ -203,6 +204,7 @@ const SubmitButton = styled.button`
 `;
 
 const SignUp: NextPage = () => {
+  const { user, logInUser } = useContext(UserContext);
   const [message, setMessage] = useState("");
   const [modal, setModal] = useState(false);
   const [addressInfo, setAddress] = useState("");
@@ -233,7 +235,7 @@ const SignUp: NextPage = () => {
       return "이메일을 입력해주세요";
     } else if (!data.phone) {
       return "전화번호를 입력해주세요";
-    } else if (!data.one || !data.two || !data.five) {
+    } else if (!data.all && (!data.one || !data.two || !data.five)) {
       return "필수 이용약관에 동의해주세요";
     } else {
       return "";
@@ -245,9 +247,13 @@ const SignUp: NextPage = () => {
     if (result) {
       setMessage(result);
       setModal(true);
+      console.log(data);
     } else {
+      logInUser({
+        id: data.id,
+        password: (passwordRef.current as HTMLInputElement).value,
+      });
       // api 호출
-      console.log(data, (passwordRef.current as HTMLInputElement).value);
     }
   };
 
@@ -612,7 +618,11 @@ const SignUp: NextPage = () => {
                 </h1>
                 <div className="third__info" ref={AllBox}>
                   <label className="info__All">
-                    <input type="checkbox" onClick={onAgreeCheckClick} />
+                    <input
+                      type="checkbox"
+                      onClick={onAgreeCheckClick}
+                      {...register("all")}
+                    />
                     <div>
                       <h3>전체 동의합니다.</h3>
                       선택항목에 동의하지 않은 경우도 회원가입 및 일반적인

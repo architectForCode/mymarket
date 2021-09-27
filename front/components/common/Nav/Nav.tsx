@@ -161,8 +161,8 @@ const Nav: NextPage = () => {
           <Image
             src="/images/logo.jpg"
             alt="logo"
-            width={200}
-            height={200}
+            width={119 * 1.4}
+            height={119 * 1.4}
           ></Image>
           <div className="header__auth">
             <Link href="/SignUp">
