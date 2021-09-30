@@ -23,7 +23,8 @@ const CategoryWrapper = styled.div`
   display: flex;
   transform: translate(22.5%, 1%);
   overflow: auto;
-
+  position: absolute;
+  z-index: 50;
   ul.mainList {
     display: flex;
     flex-direction: column;
