@@ -16,6 +16,8 @@ const NavWrapper = styled.div`
   width: 100%;
   height: 175px;
   box-shadow: 0px 1px 10px rgba(1, 1, 1, 0.1);
+  z-index: 10;
+  background-color: white;
 `;
 const NavInWrapper = styled.div`
   width: 85%;
@@ -29,6 +31,7 @@ const LinkWrapper = styled.div`
   align-items: center;
   justify-items: center;
   background-color: white;
+
   div.Icon {
     height: 120%;
     display: flex;
