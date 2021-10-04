@@ -4,10 +4,13 @@ import { SliderImages } from "../lib/images";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef } from "react";
+import { windowWidth } from "../styles/globalCss";
 
 const Wraper = styled.div`
   position: relative;
   overflow: hidden;
+  max-width: ${windowWidth};
+  margin: auto;
 `;
 
 const SliderWrapper = styled.ul`
@@ -19,6 +22,11 @@ const SliderWrapper = styled.ul`
     display: none;
   } */
   transition: transform 0.5s ease-in-out;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+
   li {
     all: unset;
     width: 100%;

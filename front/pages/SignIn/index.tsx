@@ -3,9 +3,11 @@ import Link from "next/dist/client/link";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Nav from "../../components/common/Nav/Nav";
+import { windowWidth } from "../../styles/globalCss";
 
 const SignInWrapper = styled.div`
   width: 100%;
+  min-width: ${windowWidth};
   height: 70vh;
   display: flex;
   flex-direction: column;

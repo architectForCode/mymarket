@@ -9,9 +9,13 @@ import Nav from "../components/common/Nav/Nav";
 import HomeSlider from "../components/HomeSlider";
 import CommonSlider from "../components/CommonSlider";
 import HomeSide from "../components/HomeSide";
+import { windowWidth } from "../styles/globalCss";
 
 const HomeBlock = styled.div`
   min-height: 100vh;
+  width: ${windowWidth};
+  margin: auto;
+
   section.homeSection {
     position: relative;
     height: 100vh;

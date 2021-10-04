@@ -11,11 +11,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import Category from "./Category";
+import { windowWidth } from "../../../styles/globalCss";
 
 const NavWrapper = styled.div`
   width: 100%;
+  min-width: ${windowWidth};
+  margin: auto;
   height: 175px;
-  box-shadow: 0px 1px 10px rgba(1, 1, 1, 0.1);
+
   z-index: 10;
   background-color: white;
 `;
@@ -28,6 +31,7 @@ const LinkWrapper = styled.div`
   height: 50px;
   display: grid;
   grid-template-columns: repeat(5, 1fr) 3fr;
+
   align-items: center;
   justify-items: center;
   background-color: white;
@@ -143,10 +147,12 @@ const Nav: NextPage = () => {
       HeaderRef.current.style.display = "none";
       NavRef.current.style.position = "fixed";
       NavRef.current.style.height = "50px";
+      NavRef.current.style.width = windowWidth;
     } else if (HeaderRef.current && NavRef.current && window.scrollY <= 110) {
       HeaderRef.current.style.display = "grid";
       NavRef.current.style.position = "";
       NavRef.current.style.height = "175px";
+      NavRef.current.style.width = "";
     }
   };
 

@@ -19,6 +19,10 @@ const SliderWrapper = styled.ul`
   justify-items: center;
   width: 100%;
   transition: transform 0.5s ease-in-out;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
 `;
 
 const StyledLeft = styled(LeftArrow)`

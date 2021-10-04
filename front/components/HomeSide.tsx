@@ -9,7 +9,7 @@ const Wrapper = styled.ul`
   top: 107px;
   right: 30px;
 
-  transition: transform 0.3s linear;
+  transition: all 0.3s linear;
 
   & > li:first-child {
     margin-bottom: 8px;
@@ -29,39 +29,30 @@ const Wrapper = styled.ul`
 
 const HomeSide = () => {
   const SideRef = useRef<HTMLUListElement>(null);
-  const direction = useScrollDirection();
+  // const direction = useScrollDirection();
 
   const setSlider = useCallback(() => {
     if (SideRef.current) {
-      const { top } = SideRef.current.getBoundingClientRect();
-      const originSpot = SideRef.current.style.transform
-        ? Number(SideRef.current.style.transform.split("(")[1].split("px")[0])
-        : 0;
+      // const { top } = SideRef.current.getBoundingClientRect();
+      // const originSpot = SideRef.current.style.transform
+      //   ? Number(SideRef.current.style.transform.split("(")[1].split("px")[0])
+      //   : 0;
 
-      if (window.scrollY >= 200) {
-        if (direction === "down") {
-          SideRef.current.style.transform = `translateY(${originSpot + 20}px)`;
-        } else if (direction === "up") {
-          SideRef.current.style.transform = `translateY(${originSpot - 20}px)`;
-        }
+      SideRef.current.style.display = "block";
+      if (window.scrollY > 200) {
+        setTimeout(
+          () => (SideRef.current!.style.top = `${window.scrollY}px`),
+          300
+        );
       } else {
-        SideRef.current.style.transform = "translateY(0px)";
+        if (window.scrollY === 0) {
+          SideRef.current.style.display = "none";
+          return;
+        }
+        SideRef.current.style.top = "107px";
       }
-
-      // if (direction === "down") {
-      //   console.log(window.scrollY);
-      //   if (window.scrollY<= 100) {
-      //     SideRef.current.style.transform = `translateY(${originSpot + 20}px)`;
-      //   }
-      // } else if (direction === "up") {
-      //   if (top > 100)
-      //     SideRef.current.style.transform = `translateY(${originSpot - 20}px)`;
-
-      //   if (Number(window.scrollY) < 205)
-      //     SideRef.current.style.transform = "translateY(0px)";
-      // }
     }
-  }, [direction]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", setSlider);

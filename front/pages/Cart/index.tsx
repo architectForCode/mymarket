@@ -9,9 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import styled from "styled-components";
 import Nav from "../../components/common/Nav/Nav";
+import { windowWidth } from "../../styles/globalCss";
 
 const CartWrapper = styled.div`
   width: 100%;
+  min-width: ${windowWidth};
   /* height: 100%; */
   padding: 50px 100px;
 

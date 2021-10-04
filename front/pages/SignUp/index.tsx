@@ -8,9 +8,11 @@ import React, { useContext, useRef, useState } from "react";
 import Message from "../../components/common/Message";
 import SearchAddress from "../../components/common/SearchAddress";
 import { UserContext } from "../../contexts/User";
+import { windowWidth } from "../../styles/globalCss";
 
 const SignWrapper = styled.div`
   width: 100%;
+  min-width: ${windowWidth};
 `;
 
 const FormWrapper = styled.div`
