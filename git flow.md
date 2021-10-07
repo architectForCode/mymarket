@@ -43,3 +43,8 @@
 1. 새로운 코드 수정 작업을 할 때는 반드시 새로운 브랜치를 따서 진행해야함
 2. 새로운 브랜치는 반드시 __dev_back__ 으로 이동한 뒤 만들어야함
 3. 수정사항을 깃허브로 올린 뒤 반드시 __dev_back__ 을 다시 로컬로 내려받아서 로컬에도 반영시켜야함
+<br/>
+
+## 참고 사이트
+https://wayhome25.github.io/git/2017/07/08/git-first-pull-request-story/<br/>
+https://chanhuiseok.github.io/posts/git-3/
