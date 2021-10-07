@@ -15,7 +15,7 @@
 /*
    여기까지 진행하면 깃 허브 사이트에서 pull request 요청이 뜰 것이다.
    클릭 후 pull reqeust 를 요청하면 화면이 전환된다.(dev_back 으로 merge 되는 것인지 확인)
-   여기서 누군가(혹은 자신이) merge pull request 를 클릭하면 정상적으로 새로운 
+   여기서 다른 팀원이(혹은 자신이) merge pull request 를 클릭하면 정상적으로 새로운 
    수정사항(new_branch)이 dev_back 에 merge 된다.(깃 허브 상에서)
    이제 다시 로컬로 돌아간다.
 */
