@@ -30,12 +30,10 @@ _새로운 브랜치를 생성할 때 dev_back 브랜치에서 생성해야 새�
 - 현재 로컬에서 새로운 브랜치(new_branch)를 따서 작업을 진행중인 경우
 ~~~
 0. git stash			// 작업 중인 내역을 스택에 임시 저장해둠
-1. git checkout dev_back	// dev_back 브랜치로 이동
-2. git pull origin dev_back	// 깃 허브의 최신버전 내려받음
-3. git checkout new_branch	// 작업 중이던 브랜치로 이동
-4. git merge dev_back		// 충돌 발생 시 직접 수정
-5. git stash pop		// 작업 중이던 내역을 스택에서 꺼냄
-6. 다시 작업 진행
+1. git pull origin dev_back	// 깃 허브의 dev_back 최신버전 내려받음
+2. git merge dev_back		// 충돌 발생 시 직접 수정
+3. git stash pop		// 작업 중이던 내역을 스택에서 꺼냄
+4. 다시 작업 진행
 ~~~
 
 - 작업을 진행하는 중이 아니라면 위 과정의 1, 2 번만 진행하면 됨
