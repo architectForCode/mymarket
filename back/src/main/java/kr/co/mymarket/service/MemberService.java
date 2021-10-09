@@ -1,16 +1,13 @@
 package kr.co.mymarket.service;
 
-import kr.co.mymarket.web.dto.MemberLoginDto;
-import kr.co.mymarket.web.dto.MemberLogoutDto;
-import kr.co.mymarket.web.dto.MemberSaveDto;
-import kr.co.mymarket.web.dto.MemberUpdateDto;
+import kr.co.mymarket.web.dto.MemberDTO;
 
 public interface MemberService {
-    MemberSaveDto save(MemberSaveDto memberSaveDto);
-    int update(MemberUpdateDto memberUpdateDto);
+    MemberDTO save(MemberDTO memberSaveDto);
+    int update(MemberDTO memberUpdateDto);
     int delete(int memberId);
-    MemberLoginDto login(MemberLoginDto memberLoginDto);
-    MemberLogoutDto logout(MemberLogoutDto memberLogoutDto);
+    MemberDTO login(MemberDTO memberLoginDto);
+    MemberDTO logout(MemberDTO memberLogoutDto);
     String findId(String name, String email);
     String findPassword(String name, String id, String email);
 }
