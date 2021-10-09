@@ -1,18 +1,23 @@
 package kr.co.mymarket.service;
 
-import kr.co.mymarket.web.dto.MemberLoginDto;
-import kr.co.mymarket.web.dto.MemberLogoutDto;
-import kr.co.mymarket.web.dto.MemberSaveDto;
-import kr.co.mymarket.web.dto.MemberUpdateDto;
+import kr.co.mymarket.domain.member.MemberRepository;
+import kr.co.mymarket.web.dto.MemberDTO;
 
 public class MemberServiceImpl implements MemberService {
+
+    private final MemberRepository memberRepository;
+
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
     @Override
-    public MemberSaveDto save(MemberSaveDto memberSaveDto) {
+    public MemberDTO save(MemberDTO memberSaveDto) {
         return null;
     }
 
     @Override
-    public int update(MemberUpdateDto memberUpdateDto) {
+    public int update(MemberDTO memberUpdateDto) {
         return 0;
     }
 
@@ -22,12 +27,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberLoginDto login(MemberLoginDto memberLoginDto) {
+    public MemberDTO login(MemberDTO memberLoginDto) {
         return null;
     }
 
     @Override
-    public MemberLogoutDto logout(MemberLogoutDto memberLogoutDto) {
+    public MemberDTO logout(MemberDTO memberLogoutDto) {
         return null;
     }
 
