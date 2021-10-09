@@ -27,7 +27,7 @@ _새로운 브랜치를 생성할 때 dev_back 브랜치에서 생성해야 새�
 <br/>
 
 ## 깃허브에서 내려받는 경우
-- 현재 로컬에서 새로운 브랜치(new_branch)를 따서 작업을 진행중인 경우
+- 현재 로컬에서 새로운 브랜치(new_branch)를 따서 작업을 진행중인 경우(git status 로 확인)
 ~~~
 0. git stash			// 작업 중인 내역을 스택에 임시 저장해둠
 1. git pull origin dev_back	// 깃 허브의 dev_back 최신버전 내려받음
